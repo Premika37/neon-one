@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Neon One — Pipeline Lifecycle</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f1f5f9;
+      padding: 48px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Page header ─────────────────────────────── */
+    .page-header {
+      width: 640px;
+      margin-bottom: 36px;
+    }
+    .page-header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .page-header p {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* ── Legend ──────────────────────────────────── */
+    .legend {
+      width: 640px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 36px;
+    }
+    .legend-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ── Flow container ──────────────────────────── */
+    .flow { width: 640px; display: flex; flex-direction: column; align-items: center; }
+
+    /* ── START / END markers ─────────────────────── */
+    .marker {
+      width: 130px;
+      padding: 10px 0;
+      border-radius: 999px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+    .marker.start { background: #166534; color: #fff; }
+    .marker.end   { background: #1e3a8a; color: #fff; }
+
+    /* ── Arrow ───────────────────────────────────── */
+    .arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2px 0;
+      gap: 0;
+    }
+    .arrow-line {
+      width: 2px;
+      height: 28px;
+      background: #94a3b8;
+    }
+    .arrow-head {
+      width: 0; height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid #94a3b8;
+    }
+    .arrow-label {
+      font-size: 10px;
+      color: #64748b;
+      margin-top: -2px;
+      font-style: italic;
+    }
+
+    /* ── Stage card ──────────────────────────────── */
+    .stage {
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      padding: 18px 20px 18px 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      border-left: 5px solid #cbd5e1;
+    }
+
+    .step-num {
+      min-width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      margin-top: 2px;
+    }
+
+    .stage-body { flex: 1; }
+
+    .tool-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      color: white;
+    }
+
+    .stage-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .stage-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .stage-points li {
+      font-size: 12px;
+      color: #475569;
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .stage-points li::before {
+      content: '•';
+      position: absolute;
+      left: 4px;
+      color: #94a3b8;
+    }
+
+    /* ── Milestone node (Salesforce MQL) ─────────── */
+    .milestone {
+      width: 100%;
+      background: #eff6ff;
+      border: 2px dashed #3b82f6;
+      border-radius: 12px;
+      padding: 14px 20px;
+      text-align: center;
+    }
+    .milestone .m-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: #1d4ed8;
+      margin-bottom: 4px;
+    }
+    .milestone .m-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e3a8a;
+    }
+    .milestone .m-sub {
+      font-size: 11px;
+      color: #3b82f6;
+      margin-top: 3px;
+    }
+
+    /* ── Decision diamond ────────────────────────── */
+    .decision-wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .diamond-box {
+      background: #fef9c3;
+      border: 2px solid #ca8a04;
+      border-radius: 8px;
+      padding: 14px 28px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #713f12;
+    }
+    .diamond-box .d-icon { font-size: 20px; margin-bottom: 4px; }
+
+    /* ── Branch split ────────────────────────────── */
+    .branch-row {
+      width: 100%;
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+    }
+    .branch {
+      flex: 1;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .branch.yes {
+      background: #f0fdf4;
+      border: 2px solid #16a34a;
+    }
+    .branch.no {
+      background: #fff7ed;
+      border: 2px solid #ea580c;
+    }
+    .branch-header {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .branch.yes .branch-header { color: #15803d; }
+    .branch.no  .branch-header { color: #c2410c; }
+    .branch-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .branch-points li {
+      font-size: 11px;
+      color: #475569;
+      padding-left: 12px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .branch-points li::before {
+      content: '›';
+      position: absolute;
+      left: 2px;
+      color: #94a3b8;
+    }
+    .nurture-loop {
+      font-size: 11px;
+      color: #c2410c;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* ── Tool color tokens ───────────────────────── */
+    .c-neon    { background: #0f172a; }
+    .c-fc      { background: #0d9488; }
+    .c-sf      { background: #0284c7; }
+    .c-tc      { background: #7c3aed; }
+    .c-clay    { background: #d97706; }
+    .c-sdr     { background: #16a34a; }
+    .c-cp      { background: #dc2626; }
+
+    .b-neon  { border-color: #0f172a; }
+    .b-fc    { border-color: #0d9488; }
+    .b-sf    { border-color: #0284c7; }
+    .b-tc    { border-color: #7c3aed; }
+    .b-clay  { border-color: #d97706; }
+    .b-sdr   { border-color: #16a34a; }
+    .b-cp    { border-color: #dc2626; }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────── -->
+<div class="page-header">
+  <h1>Neon One — GTM Pipeline Lifecycle</h1>
+  <p>How a nonprofit goes from seeing a Neon One ad → becoming a scheduled demo → closing as a customer. Read top to bottom.</p>
+</div>
+
+<!-- ── Legend ─────────────────────────────────────── -->
+<div class="legend">
+  <div class="legend-pill"><div class="legend-dot" style="background:#0f172a"></div>Neon One</div>
+  <div class="legend-pill"><div class="legend-dot" style="background:#0d9488"></div>Full Circle Insights</div>
+  <div class="legend-pill"><div class="legend-dot" style="background:#0284c7"></div>Salesforce</div>
+  <div class="legend-pill"><div class="legend-dot" style="background:#7c3aed"></div>Traction Complete</div>
+  <div class="legend-pill"><div class="legend-dot" style="background:#d97706"></div>Clay</div>
+  <div class="legend-pill"><div class="legend-dot" style="background:#16a34a"></div>SDR (Human)</div>
+  <div class="legend-pill"><div class="legend-dot" style="background:#dc2626"></div>Chili Piper</div>
+</div>
+
+<!-- ── Flow ───────────────────────────────────────── -->
+<div class="flow">
+
+  <!-- START -->
+  <div class="marker start">▶ START</div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- 1. Campaign Launch -->
+  <div class="stage b-neon">
+    <div class="step-num c-neon">1</div>
+    <div class="stage-body">
+      <div class="tool-badge c-neon">Neon One — Marketing</div>
+      <div class="stage-title">Campaign Launch</div>
+      <ul class="stage-points">
+        <li>Neon One runs campaigns targeting nonprofits looking for a CRM</li>
+        <li>Channels: Google Ads, LinkedIn, Meta, email sequences, webinars, SEO content</li>
+        <li>Goal: drive nonprofits to neonone.com to request a demo</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- 2. Digital Source Tracker -->
+  <div class="stage b-fc">
+    <div class="step-num c-fc">2</div>
+    <div class="stage-body">
+      <div class="tool-badge c-fc">Full Circle — Digital Source Tracker</div>
+      <div class="stage-title">Anonymous Visitor Lands on Website</div>
+      <ul class="stage-points">
+        <li>A nonprofit staffer clicks a LinkedIn ad and arrives on neonone.com</li>
+        <li>Full Circle's first-party tracking pixel fires and captures UTM parameters (which ad, which campaign, which channel)</li>
+        <li>Every page they visit is recorded — /pricing, /nonprofits, /demo — even though they haven't filled any form yet</li>
+        <li>Session is stored anonymously and will be matched to their identity later</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- 3. Form Submission -->
+  <div class="stage b-sf">
+    <div class="step-num c-sf">3</div>
+    <div class="stage-body">
+      <div class="tool-badge c-sf">Website Form</div>
+      <div class="stage-title">Prospect Submits "Request a Demo" Form</div>
+      <ul class="stage-points">
+        <li>Visitor fills out the demo request form: name, work email, org name, current CRM, size</li>
+        <li>They are now a known identity — Full Circle retroactively links all their anonymous sessions to this email</li>
+        <li>Full campaign journey is now complete: first ad click → pages visited → form fill</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- 4. Campaign Attribution -->
+  <div class="stage b-fc">
+    <div class="step-num c-fc">4</div>
+    <div class="stage-body">
+      <div class="tool-badge c-fc">Full Circle — Campaign Attribution</div>
+      <div class="stage-title">Attribution Recorded in Salesforce</div>
+      <ul class="stage-points">
+        <li>Full Circle creates a Campaign Member record in Salesforce for every touchpoint this lead had</li>
+        <li>Multi-touch attribution model assigns credit: e.g. LinkedIn Ad (40%), Webinar (30%), Demo Form (30%)</li>
+        <li>Lead Source, Lead Source Detail, and all UTM fields are populated on the Lead record</li>
+        <li>Marketing now knows exactly which campaigns influenced this lead</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- MQL Milestone -->
+  <div class="milestone">
+    <div class="m-label">⚡ Salesforce Milestone</div>
+    <div class="m-title">Lead Created as MQL — Marketing Qualified Lead</div>
+    <div class="m-sub">Engagement criteria met · Campaign attribution complete · Ready for Sales handoff</div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- 5. Lead-to-Account Matching -->
+  <div class="stage b-tc">
+    <div class="step-num c-tc">5</div>
+    <div class="stage-body">
+      <div class="tool-badge c-tc">Traction Complete — Lead Matching</div>
+      <div class="stage-title">Lead Matched to an Account</div>
+      <ul class="stage-points">
+        <li>Traction Complete checks if this lead's org already exists as an Account in Salesforce</li>
+        <li>Matching uses: email domain, company name (fuzzy match), DUNS number</li>
+        <li>If a match is found, the Lead is linked to that Account — existing opportunities and history surface automatically</li>
+        <li>If no match, a net-new Account is prepared for creation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- 6. SDR Routing -->
+  <div class="stage b-tc">
+    <div class="step-num c-tc">6</div>
+    <div class="stage-body">
+      <div class="tool-badge c-tc">Traction Complete — Lead Routing</div>
+      <div class="stage-title">Lead Routed to the Right SDR</div>
+      <ul class="stage-points">
+        <li>Routing rules fire: territory, org size, product line, SDR availability all evaluated</li>
+        <li>Lead is assigned to a specific SDR using round-robin or weighted queue</li>
+        <li>SLA timer starts — SDR must respond within a defined window (e.g. 1 hour)</li>
+        <li>SDR receives a Slack message and email: "New MQL assigned to you"</li>
+        <li>If SDR doesn't act in time, lead is auto-reassigned to the next available rep</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- 7. Clay Enrichment -->
+  <div class="stage b-clay">
+    <div class="step-num c-clay">7</div>
+    <div class="stage-body">
+      <div class="tool-badge c-clay">Clay — Lead Enrichment</div>
+      <div class="stage-title">Lead Profile Enriched with Deep Research</div>
+      <ul class="stage-points">
+        <li><strong>Waterfall enrichment:</strong> Clay queries 150+ data providers sequentially (Apollo → Hunter → Lusha → Clearbit…) to find verified email and direct phone number</li>
+        <li><strong>Firmographics:</strong> Annual revenue, employee count, current tech stack, CRM they're using today (Raiser's Edge? DonorPerfect?), recent funding</li>
+        <li><strong>Claygent AI research:</strong> Reads the nonprofit's website, analyzes their 990 tax filings, profiles leadership team, finds recent news and milestones</li>
+        <li><strong>Intent signals:</strong> Detects job changes, website visits, company mentions — flags if they're actively evaluating CRMs</li>
+        <li>All enriched data syncs back to the Salesforce Lead record — SDR now has a full dossier</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- 8. SDR Outreach -->
+  <div class="stage b-sdr">
+    <div class="step-num c-sdr">8</div>
+    <div class="stage-body">
+      <div class="tool-badge c-sdr">SDR — Sales Development Rep</div>
+      <div class="stage-title">SDR Reviews Lead and Begins Outreach</div>
+      <ul class="stage-points">
+        <li>SDR opens the enriched Lead record: sees campaign attribution history, Clay research, ICP grade, engagement score</li>
+        <li>Sends a personalized email referencing the org's specific situation (e.g. "I saw you're still on Raiser's Edge…")</li>
+        <li>Follows up with a LinkedIn message and phone call using the direct number from Clay</li>
+        <li>Runs a multi-touch sequence over 7–10 days if no response</li>
+        <li>Goal: qualify the lead (budget, authority, need, timeline) and get them on a call</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- 9. Chili Piper Booking -->
+  <div class="stage b-cp">
+    <div class="step-num c-cp">9</div>
+    <div class="stage-body">
+      <div class="tool-badge c-cp">Chili Piper — Meeting Booking</div>
+      <div class="stage-title">Demo Meeting Scheduled</div>
+      <ul class="stage-points">
+        <li><strong>Inbound path:</strong> If prospect filled out the demo form directly, Chili Piper's Form Concierge shows the right rep's calendar in under 5 seconds — prospect books instantly</li>
+        <li><strong>Outbound path:</strong> SDR sends a personalized Chili Piper booking link — prospect picks a time slot, Distro routes to the correct AE</li>
+        <li>Calendar invite sent automatically with agenda and Zoom/Teams link</li>
+        <li>24-hour and 1-hour reminder emails queued</li>
+        <li>Salesforce updated: Contact record, Opportunity record, and Calendar Event all created automatically</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- 10. Discovery Call -->
+  <div class="stage b-sf">
+    <div class="step-num c-sf">10</div>
+    <div class="stage-body">
+      <div class="tool-badge c-sf">SDR / Account Executive</div>
+      <div class="stage-title">Discovery &amp; Demo Call</div>
+      <ul class="stage-points">
+        <li>SDR or AE joins the call with full context: org background, current CRM, pain points, campaign history</li>
+        <li>Explores the nonprofit's needs: donor database size, fundraising workflows, reporting requirements</li>
+        <li>Walks through a live demo of Neon One CRM tailored to their sector</li>
+        <li>Discusses migration path from their current tool (e.g. Blackbaud, DonorPerfect)</li>
+        <li>Pricing and timeline introduced</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- Decision -->
+  <div class="decision-wrap">
+    <div class="diamond-box">
+      <div class="d-icon">◆</div>
+      Is this lead qualified?<br/>
+      <span style="font-size:11px; font-weight:400; color:#92400e">
+        ICP match &nbsp;·&nbsp; Budget confirmed &nbsp;·&nbsp; Decision-maker &nbsp;·&nbsp; Clear timeline
+      </span>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- Outcome branches -->
+  <div class="branch-row">
+
+    <div class="branch yes">
+      <div class="branch-header">✅ YES — Qualified</div>
+      <ul class="branch-points">
+        <li>Lead converted to <strong>SQL (Sales Qualified Lead)</strong></li>
+        <li>Salesforce: Lead → Account + Contact + Opportunity</li>
+        <li>Handed off to Account Executive (AE)</li>
+        <li>Full campaign attribution history follows the Opportunity</li>
+        <li>AE sends proposal and pricing deck</li>
+        <li>Deal progresses through pipeline to close</li>
+        <li>🏆 Closed-Won → Neon One CRM customer</li>
+      </ul>
+    </div>
+
+    <div class="branch no">
+      <div class="branch-header">❌ NO — Not Qualified</div>
+      <ul class="branch-points">
+        <li>Lead marked as disqualified with reason code</li>
+        <li>Added to a long-term nurture email sequence</li>
+        <li>Continues to receive Neon One content and campaigns</li>
+        <li>Full Circle keeps tracking future website visits and touchpoints</li>
+        <li>When intent signals spike again (e.g. they revisit /pricing), re-enters the pipeline at Stage 5</li>
+      </ul>
+      <div class="nurture-loop">↩ Loops back to Stage 2 on next campaign touch</div>
+    </div>
+
+  </div>
+
+  <div class="arrow" style="margin-top: 16px;"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- END -->
+  <div class="marker end">■ END</div>
+
+</div><!-- /flow -->
+
+</body>
+</html>

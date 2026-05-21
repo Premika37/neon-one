@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Neon One — Marketing Team User Journey</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; color: #0f172a; }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); color: white; padding: 52px 48px 44px; }
+    .hero .back { font-size: 12px; color: #64748b; margin-bottom: 14px; }
+    .hero h1 { font-size: 28px; font-weight: 800; margin-bottom: 10px; }
+    .hero p { font-size: 14px; color: #94a3b8; max-width: 540px; line-height: 1.7; }
+    .hero .tags { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+    .hero .tag { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); color: #cbd5e1; font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 999px; }
+
+    /* Journey map */
+    .jmap { background: white; border-bottom: 1px solid #e2e8f0; padding: 16px 48px; position: sticky; top: 0; z-index: 100; overflow-x: auto; }
+    .jmap-inner { display: flex; align-items: center; min-width: max-content; gap: 0; }
+    .jstage { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; color: #64748b; text-decoration: none; white-space: nowrap; }
+    .jstage:hover { background: #f1f5f9; color: #0f172a; }
+    .jstage .n { width: 18px; height: 18px; border-radius: 50%; background: #e2e8f0; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; }
+    .jconn { width: 20px; height: 1px; background: #e2e8f0; }
+
+    /* Main */
+    .main { max-width: 960px; margin: 0 auto; padding: 48px 24px 96px; }
+
+    /* Stage section */
+    .stage-sec { margin-bottom: 72px; scroll-margin-top: 64px; }
+    .stage-hdr { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 22px; }
+    .snum { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 800; color: white; flex-shrink: 0; }
+    .smeta h2 { font-size: 19px; font-weight: 700; color: #0f172a; margin-bottom: 3px; }
+    .smeta p { font-size: 13px; color: #64748b; line-height: 1.6; }
+    .surl { display: inline-block; font-size: 11px; font-family: 'SF Mono', Consolas, monospace; background: #f1f5f9; border: 1px solid #e2e8f0; color: #64748b; padding: 2px 8px; border-radius: 4px; margin-top: 6px; }
+
+    /* Browser */
+    .browser { background: #1e293b; border-radius: 12px; overflow: hidden; box-shadow: 0 16px 48px rgba(0,0,0,.18); margin-bottom: 20px; }
+    .bchrome { background: #334155; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+    .bdots { display: flex; gap: 5px; }
+    .bdot { width: 11px; height: 11px; border-radius: 50%; }
+    .bdot.r { background: #ef4444; } .bdot.y { background: #f59e0b; } .bdot.g { background: #22c55e; }
+    .burl { flex: 1; background: #1e293b; border-radius: 5px; padding: 5px 10px; font-size: 11px; font-family: 'SF Mono', Consolas, monospace; color: #94a3b8; }
+    .bbody { background: white; }
+
+    /* App shell */
+    .app { display: flex; min-height: 400px; }
+    .sidebar { width: 192px; background: #0f172a; padding: 18px 0; flex-shrink: 0; }
+    .slogo { padding: 0 14px 16px; border-bottom: 1px solid #1e293b; margin-bottom: 6px; }
+    .slogo strong { font-size: 15px; font-weight: 800; color: white; }
+    .slogo small { display: block; font-size: 9px; color: #475569; text-transform: uppercase; letter-spacing: .4px; margin-top: 1px; }
+    .nav { display: flex; align-items: center; gap: 8px; padding: 9px 14px; font-size: 12px; color: #64748b; cursor: pointer; }
+    .nav.a { background: #1e293b; color: white; border-left: 3px solid #6366f1; }
+    .nav .ic { font-size: 14px; }
+
+    .amain { flex: 1; background: #f8fafc; padding: 20px; overflow: hidden; }
+    .atopbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .atopbar h3 { font-size: 15px; font-weight: 700; }
+    .atopbar p { font-size: 11px; color: #64748b; }
+    .avc { width: 30px; height: 30px; border-radius: 50%; background: #6366f1; color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+
+    /* Form */
+    .auth-wrap { background: white; min-height: 480px; display: flex; align-items: center; justify-content: center; padding: 40px; }
+    .auth-card { width: 100%; max-width: 380px; }
+    .auth-card .logo { font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+    .auth-card .sub { font-size: 13px; color: #64748b; margin-bottom: 24px; }
+    .lbl { font-size: 11px; font-weight: 600; color: #374151; display: block; margin-bottom: 4px; }
+    .inp { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 9px 12px; font-size: 13px; color: #0f172a; background: white; margin-bottom: 12px; outline: none; }
+    .inp.filled { border-color: #6366f1; }
+    .inp.err { border-color: #ef4444; background: #fff5f5; color: #991b1b; }
+    .inp.ph { color: #94a3b8; }
+    .err-msg { font-size: 11px; color: #ef4444; margin-top: -8px; margin-bottom: 10px; }
+    .btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; margin-bottom: 10px; }
+    .btn.pri { background: #6366f1; color: white; }
+    .btn.soc { background: white; color: #374151; border: 1.5px solid #e2e8f0; }
+    .btn.sec { background: #f1f5f9; color: #0f172a; border: 1.5px solid #e2e8f0; width: auto; padding: 8px 16px; }
+    .btn-row { display: flex; gap: 8px; }
+    .divline { display: flex; align-items: center; gap: 8px; margin: 12px 0; }
+    .divline hr { flex: 1; border: none; border-top: 1px solid #e2e8f0; }
+    .divline span { font-size: 11px; color: #94a3b8; }
+    .auth-link { font-size: 12px; color: #64748b; text-align: center; margin-top: 14px; }
+    .auth-link a { color: #6366f1; font-weight: 600; }
+
+    /* KPI */
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+    .kpi { background: white; border-radius: 10px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .kpi-lbl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; color: #64748b; margin-bottom: 5px; }
+    .kpi-val { font-size: 20px; font-weight: 800; color: #0f172a; line-height: 1; }
+    .kpi-d { font-size: 10px; margin-top: 3px; }
+    .kpi-d.up { color: #16a34a; } .kpi-d.dn { color: #dc2626; }
+
+    /* Lead card */
+    .lcard { background: white; border-radius: 8px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; border: 1.5px solid #f1f5f9; margin-bottom: 7px; }
+    .lcard.new-lead { border-color: #c7d2fe; background: #eef2ff; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(99,102,241,.3); } 50% { box-shadow: 0 0 0 6px rgba(99,102,241,0); } }
+    .lav { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
+    .lname { font-size: 13px; font-weight: 600; color: #0f172a; }
+    .lorg { font-size: 11px; color: #64748b; }
+    .lbadge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; flex-shrink: 0; }
+    .lbadge.mql { background: #eff6ff; color: #2563eb; }
+    .lbadge.sql { background: #f0fdf4; color: #16a34a; }
+    .lbadge.new { background: #faf5ff; color: #7c3aed; }
+    .lbadge.nur { background: #fff7ed; color: #d97706; }
+    .lsrc { font-size: 10px; color: #94a3b8; text-align: right; flex-shrink: 0; }
+    .score { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+    .score.hi { background: #dcfce7; color: #15803d; }
+    .score.mid { background: #fef9c3; color: #854d0e; }
+    .score.lo { background: #fee2e2; color: #b91c1c; }
+
+    /* Bar chart */
+    .bar-chart { display: flex; flex-direction: column; gap: 7px; }
+    .brow { display: flex; align-items: center; gap: 8px; }
+    .blbl { width: 90px; font-size: 10px; color: #64748b; text-align: right; flex-shrink: 0; }
+    .btrack { flex: 1; background: #f1f5f9; border-radius: 999px; height: 9px; overflow: hidden; }
+    .bfill { height: 100%; border-radius: 999px; }
+    .bval { width: 32px; font-size: 10px; font-weight: 600; color: #0f172a; }
+
+    /* Funnel */
+    .funnel { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .fstep { display: flex; align-items: center; width: 100%; gap: 8px; }
+    .fbar { border-radius: 6px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; }
+    .fmeta { width: 72px; font-size: 10px; color: #64748b; }
+    .fconv { font-size: 9px; color: #94a3b8; text-align: center; margin: 1px 0; }
+
+    /* Attribution */
+    .attr-timeline { display: flex; align-items: flex-start; gap: 0; margin: 12px 0; overflow-x: auto; }
+    .anode { display: flex; flex-direction: column; align-items: center; min-width: 70px; }
+    .adot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; color: white; }
+    .albl { font-size: 9px; color: #64748b; margin-top: 4px; text-align: center; width: 64px; line-height: 1.3; }
+    .apct { font-size: 10px; font-weight: 700; color: #0f172a; margin-top: 2px; }
+    .aline { flex: 1; height: 2px; background: #e2e8f0; margin-top: 16px; min-width: 16px; }
+
+    /* Callouts */
+    .callouts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 12px; }
+    .callouts.three { grid-template-columns: 1fr 1fr 1fr; }
+    .clout { border-radius: 10px; padding: 14px 16px; border-left: 4px solid; }
+    .clout.zero { background: #f8fafc; border-color: #94a3b8; }
+    .clout.edge { background: #fffbeb; border-color: #f59e0b; }
+    .clout.touch { background: #eff6ff; border-color: #3b82f6; }
+    .clout.ok { background: #f0fdf4; border-color: #16a34a; }
+    .clout h4 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+    .clout.zero h4 { color: #64748b; } .clout.edge h4 { color: #d97706; } .clout.touch h4 { color: #2563eb; } .clout.ok h4 { color: #15803d; }
+    .clout ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .clout ul li { font-size: 12px; color: #475569; padding-left: 12px; position: relative; line-height: 1.5; }
+    .clout ul li::before { content: '›'; position: absolute; left: 0; color: #94a3b8; }
+
+    /* Wizard */
+    .wiz-bar { display: flex; align-items: center; margin-bottom: 20px; }
+    .wdot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+    .wdot.done { background: #16a34a; color: white; }
+    .wdot.act { background: #6366f1; color: white; }
+    .wdot.todo { background: #e2e8f0; color: #94a3b8; }
+    .wline { flex: 1; height: 2px; background: #e2e8f0; }
+    .wline.done { background: #16a34a; }
+    .wlbl { font-size: 10px; font-weight: 600; margin-top: 4px; text-align: center; }
+    .wstep { display: flex; flex-direction: column; align-items: center; gap: 0; }
+    .wiz-row { display: flex; align-items: flex-start; }
+
+    /* Toast */
+    .toast { background: #0f172a; color: white; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; max-width: 340px; box-shadow: 0 8px 30px rgba(0,0,0,.25); }
+    .toast .tic { font-size: 18px; }
+    .toast .tt { font-size: 12px; font-weight: 600; }
+    .toast .ts { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+
+    /* Empty state */
+    .empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; }
+    .empty .ei { font-size: 36px; opacity: .3; margin-bottom: 10px; }
+    .empty .et { font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 4px; }
+    .empty .es { font-size: 11px; color: #94a3b8; line-height: 1.5; max-width: 220px; }
+    .empty .eb { margin-top: 14px; padding: 7px 14px; background: #6366f1; color: white; border-radius: 7px; font-size: 12px; font-weight: 600; display: inline-block; }
+
+    /* Checklist */
+    .chklist { background: white; border-radius: 10px; padding: 14px; }
+    .chklist h4 { font-size: 11px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+    .chk { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f8fafc; }
+    .chk:last-child { border-bottom: none; }
+    .cbox { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+    .cbox.done { background: #16a34a; color: white; }
+    .cbox.todo { border: 2px solid #e2e8f0; }
+    .ctxt { font-size: 11px; color: #475569; }
+    .ctxt.done { text-decoration: line-through; color: #94a3b8; }
+
+    /* Alert banner */
+    .abanner { border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 8px; font-size: 12px; margin-bottom: 10px; }
+    .abanner.info { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .abanner.warn { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    .abanner.err { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .abanner.ok { background: #f0fdf4; color: #14532d; border: 1px solid #bbf7d0; }
+
+    /* Misc */
+    .tag2 { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 600; background: #f1f5f9; color: #64748b; }
+    .slbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: #94a3b8; margin-bottom: 6px; }
+    .card { background: white; border-radius: 10px; padding: 14px 16px; box-shadow: 0 1px 3px rgba(0,0,0,.05); margin-bottom: 10px; }
+    .step-div { text-align: center; font-size: 28px; color: #94a3b8; margin: 8px 0 52px; }
+    .split2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .split3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .mini-tbl { width: 100%; border-collapse: collapse; }
+    .mini-tbl th { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: #94a3b8; padding: 6px 10px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+    .mini-tbl td { font-size: 11px; color: #475569; padding: 8px 10px; border-bottom: 1px solid #f8fafc; }
+    .mini-tbl tr:last-child td { border-bottom: none; }
+    .connect-btn { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 8px; border: 1.5px solid #e2e8f0; background: white; margin-bottom: 10px; }
+    .connect-btn .cb-left { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #0f172a; }
+    .connect-btn .cb-ic { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .connect-btn .cb-status { font-size: 11px; font-weight: 600; }
+    .connect-btn .cb-status.done { color: #16a34a; }
+    .connect-btn .cb-status.todo { color: #6366f1; }
+    .connect-btn .cb-status.err { color: #dc2626; }
+    .map-area { background: #f0f4ff; border: 1.5px solid #c7d2fe; border-radius: 8px; height: 90px; position: relative; overflow: hidden; }
+    .mdot { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: #6366f1; }
+    .mdot::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 14px; height: 14px; border-radius: 50%; background: #6366f1; opacity: .2; }
+    .map-label { position: absolute; bottom: 6px; right: 8px; font-size: 9px; color: #6366f1; font-weight: 600; }
+    .detail-grid { display: grid; grid-template-columns: 200px 1fr; gap: 16px; }
+    .field-row { margin-bottom: 10px; }
+    .field-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: #94a3b8; margin-bottom: 2px; }
+    .field-val { font-size: 12px; color: #0f172a; font-weight: 500; }
+    .enriched { background: #fffbeb; border-radius: 8px; padding: 12px; border: 1px solid #fde68a; }
+    .enriched .e-hd { font-size: 10px; font-weight: 700; color: #92400e; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 8px; }
+    .enriched .e-row { display: flex; justify-content: space-between; font-size: 11px; color: #475569; padding: 4px 0; border-bottom: 1px solid #fef3c7; }
+    .enriched .e-row:last-child { border-bottom: none; }
+    .pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 999px; font-size: 10px; font-weight: 600; }
+    .pill.ind { background: #eff6ff; color: #1d4ed8; }
+    .pill.pur { background: #faf5ff; color: #7c3aed; }
+    .pill.tea { background: #f0fdfa; color: #0f766e; }
+    .pill.red { background: #fef2f2; color: #991b1b; }
+    .sla-card { background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .sla-ic { font-size: 24px; }
+    .sla-body .st { font-size: 13px; font-weight: 700; color: #991b1b; }
+    .sla-body .ss { font-size: 11px; color: #b91c1c; margin-top: 2px; }
+    .sla-body .stime { font-size: 11px; color: #dc2626; font-weight: 700; margin-top: 4px; }
+    .reassign-btn { margin-left: auto; padding: 7px 12px; background: #dc2626; color: white; border-radius: 7px; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="back">← Neon One / Pipeline Lifecycle / User Journey</div>
+  <h1>Marketing Team — User Journey</h1>
+  <p>Complete walkthrough for a Neon One marketing person: zero state → sign up → login → live dashboard monitoring incoming global leads through the full GTM pipeline.</p>
+  <div class="tags">
+    <span class="tag">11 Screens</span>
+    <span class="tag">Zero States</span>
+    <span class="tag">Edge Cases</span>
+    <span class="tag">Every Touchpoint</span>
+    <span class="tag">Enterprise Marketing</span>
+  </div>
+</div>
+
+<!-- ── Journey Map ── -->
+<div class="jmap">
+  <div class="jmap-inner">
+    <a class="jstage" href="#s1"><div class="n">1</div> Sign Up</a>
+    <div class="jconn"></div>
+    <a class="jstage" href="#s2"><div class="n">2</div> Verify Email</a>
+    <div class="jconn"></div>
+    <a class="jstage" href="#s3"><div class="n">3</div> Log In</a>
+    <div class="jconn"></div>
+    <a class="jstage" href="#s4"><div class="n">4</div> Onboarding</a>
+    <div class="jconn"></div>
+    <a class="jstage" href="#s5"><div class="n">5</div> Dashboard — Zero</a>
+    <div class="jconn"></div>
+    <a class="jstage" href="#s6"><div class="n">6</div> Dashboard — Live</a>
+    <div class="jconn"></div>
+    <a class="jstage" href="#s7"><div class="n">7</div> Lead Alert</a>
+    <div class="jconn"></div>
+    <a class="jstage" href="#s8"><div class="n">8</div> Lead Detail</a>
+    <div class="jconn"></div>
+    <a class="jstage" href="#s9"><div class="n">9</div> Attribution</a>
+    <div class="jconn"></div>
+    <a class="jstage" href="#s10"><div class="n">10</div> Pipeline Funnel</a>
+    <div class="jconn"></div>
+    <a class="jstage" href="#s11"><div class="n">11</div> SLA Alert</a>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ════════════════════════════════════════════════
+     STAGE 1 — SIGN UP
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s1">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#6366f1">1</div>
+    <div class="smeta">
+      <h2>Sign Up</h2>
+      <p>A Neon One marketing team member lands on the portal and creates an account. This is the very first touchpoint — the zero state for the entire product.</p>
+      <span class="surl">app.neonone.com/signup</span>
+    </div>
+  </div>
+
+  <!-- Zero state: empty form -->
+  <div class="slbl">Zero State — empty form</div>
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/signup</div></div>
+    <div class="bbody">
+      <div class="auth-wrap">
+        <div class="auth-card">
+          <div class="logo">Neon One</div>
+          <div class="sub">Create your marketing account</div>
+          <div class="split2" style="gap:10px">
+            <div><label class="lbl">First name</label><div class="inp ph">First name</div></div>
+            <div><label class="lbl">Last name</label><div class="inp ph">Last name</div></div>
+          </div>
+          <label class="lbl">Work email</label>
+          <div class="inp ph">you@company.com</div>
+          <label class="lbl">Company name</label>
+          <div class="inp ph">Your organization</div>
+          <label class="lbl">Your role</label>
+          <div class="inp ph" style="display:flex;align-items:center;justify-content:space-between">Select role <span style="color:#cbd5e1">▾</span></div>
+          <label class="lbl">Password</label>
+          <div class="inp ph">Create a strong password</div>
+          <div style="margin-bottom:12px"></div>
+          <div class="btn pri" style="opacity:.5">Create account →</div>
+          <div class="auth-link">Already have an account? <a href="#">Log in</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filled state -->
+  <div class="slbl" style="margin-top:16px">Filled State — ready to submit</div>
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/signup</div></div>
+    <div class="bbody">
+      <div class="auth-wrap">
+        <div class="auth-card">
+          <div class="logo">Neon One</div>
+          <div class="sub">Create your marketing account</div>
+          <div class="split2" style="gap:10px">
+            <div><label class="lbl">First name</label><div class="inp filled">Premika</div></div>
+            <div><label class="lbl">Last name</label><div class="inp filled">Manikandan</div></div>
+          </div>
+          <label class="lbl">Work email</label>
+          <div class="inp filled">premika@neonone.com</div>
+          <label class="lbl">Company name</label>
+          <div class="inp filled">Neon One</div>
+          <label class="lbl">Your role</label>
+          <div class="inp filled" style="display:flex;align-items:center;justify-content:space-between">Marketing Manager <span style="color:#6366f1">▾</span></div>
+          <label class="lbl">Password</label>
+          <div class="inp filled">••••••••••••</div>
+          <div style="margin-bottom:12px;font-size:11px;color:#16a34a;">✓ Strong password</div>
+          <div class="btn pri">Create account →</div>
+          <div class="auth-link">Already have an account? <a href="#">Log in</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error state -->
+  <div class="slbl" style="margin-top:16px">Error State — email already exists + non-work email</div>
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/signup</div></div>
+    <div class="bbody">
+      <div class="auth-wrap">
+        <div class="auth-card">
+          <div class="logo">Neon One</div>
+          <div class="sub">Create your marketing account</div>
+          <div class="abanner err">⚠ An account with this email already exists. <a href="#" style="color:#991b1b;font-weight:700;margin-left:4px">Log in instead</a></div>
+          <label class="lbl">Work email</label>
+          <div class="inp err">premika@gmail.com</div>
+          <div class="err-msg">⚠ Please use your work email address (not Gmail, Yahoo, or Hotmail)</div>
+          <label class="lbl">Password</label>
+          <div class="inp err">abc</div>
+          <div class="err-msg">⚠ Password must be at least 8 characters with 1 number and 1 symbol</div>
+          <div class="btn pri" style="opacity:.4">Create account →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:18px">
+  <div class="callouts three">
+    <div class="clout zero">
+      <h4>Zero State</h4>
+      <ul>
+        <li>All fields empty, CTA button disabled (50% opacity)</li>
+        <li>No validation until user starts typing</li>
+        <li>Role dropdown shows generic options: Marketing Manager, VP Marketing, CMO, Demand Gen, RevOps</li>
+        <li>Password strength bar hidden until user types in field</li>
+      </ul>
+    </div>
+    <div class="clout edge">
+      <h4>Edge Cases</h4>
+      <ul>
+        <li>Email already registered → inline banner + "Log in instead" link</li>
+        <li>Personal email (gmail/yahoo) → blocked with explanation</li>
+        <li>Weak password → real-time strength indicator (red/yellow/green)</li>
+        <li>Required field skipped → red border + error on submit</li>
+        <li>Company name auto-suggested from email domain</li>
+        <li>SSO option surfaces if company domain has Google/MS Workspace</li>
+      </ul>
+    </div>
+    <div class="clout touch">
+      <h4>Touchpoints</h4>
+      <ul>
+        <li>This is where Neon One's own pipeline begins — the marketer is also a lead in their own system</li>
+        <li>UTM params from how they found the signup page are captured silently</li>
+        <li>Role selection determines which dashboard template loads after onboarding</li>
+        <li>Work email triggers company enrichment via Clay immediately on submit</li>
+      </ul>
+    </div>
+  </div>
+  </div>
+</section>
+
+<div class="step-div">↓</div>
+
+<!-- ════════════════════════════════════════════════
+     STAGE 2 — EMAIL VERIFICATION
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s2">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#8b5cf6">2</div>
+    <div class="smeta">
+      <h2>Email Verification</h2>
+      <p>After sign up, the user lands on a confirmation screen. They must click the link in their email before they can access the portal.</p>
+      <span class="surl">app.neonone.com/verify-email</span>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/verify-email</div></div>
+    <div class="bbody">
+      <div class="auth-wrap" style="min-height:360px">
+        <div class="auth-card" style="text-align:center">
+          <div style="font-size:52px;margin-bottom:16px">📬</div>
+          <div class="logo" style="text-align:center">Check your inbox</div>
+          <div class="sub" style="text-align:center;margin-top:6px">We sent a verification link to<br/><strong style="color:#0f172a">premika@neonone.com</strong></div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin:20px 0;font-size:12px;color:#64748b;line-height:1.6">
+            Click the link in the email to activate your account. The link expires in <strong>24 hours</strong>.
+          </div>
+          <div class="btn sec" style="width:100%;justify-content:center;margin-bottom:10px">Resend verification email</div>
+          <div class="auth-link">Wrong email? <a href="#">Back to sign up</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callouts">
+    <div class="clout zero">
+      <h4>Zero State / Waiting</h4>
+      <ul>
+        <li>User cannot access any other page until email is verified</li>
+        <li>If they try to go to /dashboard they are redirected here</li>
+        <li>Resend button has a 60-second cooldown after click (shows countdown timer)</li>
+      </ul>
+    </div>
+    <div class="clout edge">
+      <h4>Edge Cases</h4>
+      <ul>
+        <li>Link expired (24h) → clicking shows "Link expired — request a new one" screen</li>
+        <li>Link already used → "Already verified — log in" screen</li>
+        <li>Wrong email entered → "Back to sign up" re-enters form pre-filled</li>
+        <li>Email goes to spam → in-page hint: "Check your spam folder or corporate firewall"</li>
+        <li>Corporate email server rejects → shows alternate: "Use SSO login instead"</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="step-div">↓</div>
+
+<!-- ════════════════════════════════════════════════
+     STAGE 3 — LOG IN
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s3">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#6366f1">3</div>
+    <div class="smeta">
+      <h2>Log In</h2>
+      <p>Returning user authenticates. Includes SSO options, forgot password flow, and lockout protection after repeated failures.</p>
+      <span class="surl">app.neonone.com/login</span>
+    </div>
+  </div>
+
+  <div class="split2">
+    <!-- Normal login -->
+    <div>
+      <div class="slbl">Normal State</div>
+      <div class="browser">
+        <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/login</div></div>
+        <div class="bbody">
+          <div class="auth-wrap" style="min-height:380px;padding:30px">
+            <div class="auth-card">
+              <div class="logo">Neon One</div>
+              <div class="sub">Sign in to your account</div>
+              <div class="btn soc" style="margin-bottom:8px">🔵 Continue with Google</div>
+              <div class="btn soc">🟦 Continue with Microsoft</div>
+              <div class="divline"><hr/><span>or</span><hr/></div>
+              <label class="lbl">Work email</label>
+              <div class="inp filled">premika@neonone.com</div>
+              <label class="lbl">Password</label>
+              <div class="inp ph">••••••••</div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <label style="font-size:11px;color:#64748b;display:flex;align-items:center;gap:6px"><input type="checkbox" checked style="accent-color:#6366f1"/> Remember me</label>
+                <a href="#" style="font-size:11px;color:#6366f1;font-weight:600">Forgot password?</a>
+              </div>
+              <div class="btn pri">Sign in →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error login -->
+    <div>
+      <div class="slbl">Error State — wrong password (4th attempt)</div>
+      <div class="browser">
+        <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/login</div></div>
+        <div class="bbody">
+          <div class="auth-wrap" style="min-height:380px;padding:30px">
+            <div class="auth-card">
+              <div class="logo">Neon One</div>
+              <div class="sub">Sign in to your account</div>
+              <div class="abanner err" style="margin-bottom:14px">⚠ Incorrect password. 1 attempt remaining before your account is locked.</div>
+              <label class="lbl">Work email</label>
+              <div class="inp filled">premika@neonone.com</div>
+              <label class="lbl">Password</label>
+              <div class="inp err">••••••••</div>
+              <div class="err-msg">Incorrect password</div>
+              <div class="btn pri">Try again →</div>
+              <div style="text-align:center;margin-top:10px"><a href="#" style="font-size:12px;color:#6366f1;font-weight:600">Forgot password? Reset it</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account locked state -->
+  <div class="slbl" style="margin-top:14px">Locked State — 5 failed attempts</div>
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/login</div></div>
+    <div class="bbody">
+      <div class="auth-wrap" style="min-height:280px">
+        <div class="auth-card" style="text-align:center">
+          <div style="font-size:40px;margin-bottom:12px">🔒</div>
+          <div class="logo" style="text-align:center">Account temporarily locked</div>
+          <div class="sub" style="text-align:center">Too many failed attempts. We've sent an unlock link to <strong>premika@neonone.com</strong></div>
+          <div style="margin-top:16px;font-size:12px;color:#64748b">Didn't get the email? <a href="#" style="color:#6366f1;font-weight:600">Resend</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+  <div class="callouts three">
+    <div class="clout zero"><h4>Zero State</h4><ul><li>Email pre-filled if returning user (stored in cookie)</li><li>SSO buttons show if company domain is recognized</li><li>Remember me checked by default on trusted devices</li></ul></div>
+    <div class="clout edge"><h4>Edge Cases</h4><ul><li>Wrong password 1–4x → progressive warning banner</li><li>5th failure → account locked, email sent</li><li>SSO org mismatch → "This Google account doesn't match your registered work email"</li><li>Session expired → auto-redirect to login with "Session expired" notice</li><li>Incognito / new device → asks to verify device via email code</li></ul></div>
+    <div class="clout touch"><h4>Touchpoints</h4><ul><li>Successful login triggers session creation and audit log entry</li><li>First login after invite → redirected to onboarding wizard</li><li>Returning user → straight to dashboard, preserving last viewed tab</li></ul></div>
+  </div>
+  </div>
+</section>
+
+<div class="step-div">↓</div>
+
+<!-- ════════════════════════════════════════════════
+     STAGE 4 — ONBOARDING WIZARD
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s4">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#0d9488">4</div>
+    <div class="smeta">
+      <h2>Onboarding — Connect Your Stack</h2>
+      <p>First-time users go through a wizard to connect their GTM tools: Salesforce, Full Circle Insights, Clay, and Chili Piper. No real data appears until at least Salesforce is connected.</p>
+      <span class="surl">app.neonone.com/onboarding</span>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/onboarding</div></div>
+    <div class="bbody">
+      <div class="app">
+        <div class="sidebar">
+          <div class="slogo"><strong>Neon One</strong><small>Marketing Portal</small></div>
+          <div class="nav"><span class="ic">🏠</span> Dashboard</div>
+          <div class="nav"><span class="ic">👥</span> Leads</div>
+          <div class="nav"><span class="ic">📊</span> Campaigns</div>
+          <div class="nav"><span class="ic">🔀</span> Pipeline</div>
+          <div class="nav"><span class="ic">📈</span> Attribution</div>
+          <div class="nav"><span class="ic">⚙️</span> Settings</div>
+        </div>
+        <div class="amain">
+          <div class="atopbar">
+            <div><h3>Welcome to Neon One, Premika 👋</h3><p>Let's connect your tools to get started</p></div>
+            <div class="avc">PM</div>
+          </div>
+
+          <!-- Progress -->
+          <div style="background:white;border-radius:10px;padding:16px;margin-bottom:16px">
+            <div style="font-size:11px;color:#64748b;margin-bottom:8px">Setup progress — Step 2 of 4</div>
+            <div style="background:#f1f5f9;border-radius:999px;height:6px;overflow:hidden"><div style="width:50%;height:100%;border-radius:999px;background:linear-gradient(90deg,#0d9488,#6366f1)"></div></div>
+          </div>
+
+          <!-- Wizard steps -->
+          <div class="wiz-bar" style="padding:0 8px">
+            <div class="wstep"><div class="wdot done">✓</div><div class="wlbl" style="color:#16a34a">Salesforce</div></div>
+            <div class="wline done"></div>
+            <div class="wstep"><div class="wdot act">2</div><div class="wlbl" style="color:#6366f1">Full Circle</div></div>
+            <div class="wline"></div>
+            <div class="wstep"><div class="wdot todo">3</div><div class="wlbl" style="color:#94a3b8">Clay</div></div>
+            <div class="wline"></div>
+            <div class="wstep"><div class="wdot todo">4</div><div class="wlbl" style="color:#94a3b8">Chili Piper</div></div>
+          </div>
+
+          <!-- Current step: Full Circle -->
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <div style="width:40px;height:40px;border-radius:10px;background:#0d9488;display:flex;align-items:center;justify-content:center;font-size:18px">🎯</div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#0f172a">Full Circle Insights</div>
+                <div style="font-size:11px;color:#64748b">Campaign attribution & digital source tracking</div>
+              </div>
+            </div>
+            <div style="font-size:12px;color:#475569;margin-bottom:14px;line-height:1.6">Full Circle tracks every campaign touchpoint and links them to Salesforce leads. You'll need admin access to your Full Circle org to authorize.</div>
+            <div class="btn pri" style="width:auto;padding:10px 20px">🔗 Connect Full Circle Insights</div>
+          </div>
+
+          <!-- Already connected -->
+          <div class="connect-btn" style="background:#f0fdf4;border-color:#bbf7d0">
+            <div class="cb-left"><div class="cb-ic" style="background:#dcfce7">☁️</div> Salesforce</div>
+            <div class="cb-status done">✓ Connected — Neon One Production</div>
+          </div>
+
+          <!-- Pending -->
+          <div class="connect-btn" style="opacity:.5">
+            <div class="cb-left"><div class="cb-ic" style="background:#fef9c3">🧱</div> Clay</div>
+            <div class="cb-status todo">Connect →</div>
+          </div>
+          <div class="connect-btn" style="opacity:.5">
+            <div class="cb-left"><div class="cb-ic" style="background:#fef2f2">🌶</div> Chili Piper</div>
+            <div class="cb-status todo">Connect →</div>
+          </div>
+
+          <div style="margin-top:12px;text-align:right;font-size:12px;color:#94a3b8"><a href="#" style="color:#94a3b8">Skip for now — set up later in Settings</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error state: connection failed -->
+  <div class="slbl" style="margin-top:14px">Edge State — connection failed</div>
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/onboarding</div></div>
+    <div class="bbody">
+      <div class="amain" style="background:#f8fafc;padding:20px">
+        <div class="abanner err">⚠ Could not connect to Full Circle Insights. Your OAuth token was rejected. Make sure you have Admin access in Full Circle and try again.</div>
+        <div class="connect-btn" style="background:#fef2f2;border-color:#fecaca">
+          <div class="cb-left"><div class="cb-ic" style="background:#fee2e2">🎯</div> Full Circle Insights</div>
+          <div class="cb-status err">✗ Connection failed — Retry</div>
+        </div>
+        <div style="font-size:12px;color:#64748b;margin-top:8px">Common causes: insufficient permissions, sandbox org selected instead of production, SSO session mismatch.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+  <div class="callouts three">
+    <div class="clout zero"><h4>Zero State</h4><ul><li>Dashboard shows no data until Salesforce is connected</li><li>Sidebar nav items are grayed out except Settings</li><li>Progress bar shows 0% until first connection</li><li>Welcome banner stays until all 4 tools connected</li></ul></div>
+    <div class="clout edge"><h4>Edge Cases</h4><ul><li>Wrong Salesforce org (sandbox vs prod) → warning + selector to pick correct org</li><li>Insufficient SF permissions → list exactly which permissions are missing</li><li>Clay API key invalid → inline field validation</li><li>Chili Piper workspace not found → search by workspace name</li><li>User skips → partial dashboard with "data missing" placeholders</li></ul></div>
+    <div class="clout touch"><h4>Touchpoints</h4><ul><li>Each successful connection triggers an initial data sync (shown as progress spinner)</li><li>Salesforce sync pulls existing MQLs, campaigns, leads, opportunities</li><li>Full Circle sync backfills attribution history up to 12 months</li><li>Completion → celebratory animation and redirect to live dashboard</li></ul></div>
+  </div>
+  </div>
+</section>
+
+<div class="step-div">↓</div>
+
+<!-- ════════════════════════════════════════════════
+     STAGE 5 — DASHBOARD ZERO STATE
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s5">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#94a3b8">5</div>
+    <div class="smeta">
+      <h2>Dashboard — Zero State</h2>
+      <p>The dashboard immediately after onboarding when tools are connected but no leads have flowed in yet. Every widget shows an empty state with a specific action prompt.</p>
+      <span class="surl">app.neonone.com/dashboard</span>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/dashboard</div></div>
+    <div class="bbody">
+      <div class="app">
+        <div class="sidebar">
+          <div class="slogo"><strong>Neon One</strong><small>Marketing Portal</small></div>
+          <div class="nav a"><span class="ic">🏠</span> Dashboard</div>
+          <div class="nav"><span class="ic">👥</span> Leads</div>
+          <div class="nav"><span class="ic">📊</span> Campaigns</div>
+          <div class="nav"><span class="ic">🔀</span> Pipeline</div>
+          <div class="nav"><span class="ic">📈</span> Attribution</div>
+          <div class="nav"><span class="ic">⚙️</span> Settings</div>
+        </div>
+        <div class="amain">
+          <div class="atopbar">
+            <div><h3>Good morning, Premika</h3><p>Friday, May 16, 2026</p></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px;opacity:.4">🔔</span><div class="avc">PM</div></div>
+          </div>
+
+          <!-- Setup checklist -->
+          <div class="abanner info" style="margin-bottom:14px">🚀 You're almost set up. Complete these steps to see your first leads.</div>
+          <div class="split2" style="margin-bottom:14px">
+            <div class="chklist">
+              <h4>Setup checklist</h4>
+              <div class="chk"><div class="cbox done">✓</div><span class="ctxt done">Connect Salesforce</span></div>
+              <div class="chk"><div class="cbox done">✓</div><span class="ctxt done">Connect Full Circle</span></div>
+              <div class="chk"><div class="cbox todo"></div><span class="ctxt">Connect Clay</span></div>
+              <div class="chk"><div class="cbox todo"></div><span class="ctxt">Connect Chili Piper</span></div>
+              <div class="chk"><div class="cbox todo"></div><span class="ctxt">Create your first campaign</span></div>
+            </div>
+            <!-- KPI zero state -->
+            <div>
+              <div class="kpi-row" style="grid-template-columns:1fr 1fr;margin-bottom:10px">
+                <div class="kpi" style="opacity:.4"><div class="kpi-lbl">Leads This Month</div><div class="kpi-val">—</div><div class="kpi-d">No data yet</div></div>
+                <div class="kpi" style="opacity:.4"><div class="kpi-lbl">MQLs This Week</div><div class="kpi-val">—</div><div class="kpi-d">No data yet</div></div>
+                <div class="kpi" style="opacity:.4"><div class="kpi-lbl">Demo Conv. Rate</div><div class="kpi-val">—</div><div class="kpi-d">No data yet</div></div>
+                <div class="kpi" style="opacity:.4"><div class="kpi-lbl">Pipeline Value</div><div class="kpi-val">—</div><div class="kpi-d">No data yet</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Empty widgets -->
+          <div class="split2">
+            <div class="card">
+              <div class="slbl">Live Lead Feed</div>
+              <div class="empty">
+                <div class="ei">👥</div>
+                <div class="et">No leads yet</div>
+                <div class="es">Leads will appear here in real time as people fill out your demo forms.</div>
+                <div class="eb">View Campaigns →</div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="slbl">Campaign Performance</div>
+              <div class="empty">
+                <div class="ei">📊</div>
+                <div class="et">No campaign data</div>
+                <div class="es">Connect your campaigns in Salesforce to see performance here.</div>
+                <div class="eb">Go to Settings →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+  <div class="callouts">
+    <div class="clout zero"><h4>Zero State Details</h4><ul><li>KPI cards show "—" with "No data yet" label, 40% opacity</li><li>Lead feed shows empty state with icon + explanatory text + CTA</li><li>Campaign chart shows empty state, not a broken chart</li><li>Pipeline funnel hidden entirely (not shown as empty bars)</li><li>World map shows "Connect campaigns to see geographic lead data"</li><li>Notifications bell shows 0, grayed out</li></ul></div>
+    <div class="clout edge"><h4>Edge Cases</h4><ul><li>Salesforce has historical data → shows import prompt: "We found 847 existing leads. Import them?"</li><li>Partial setup (only SF connected) → dashboard shows SF data but attribution widget is locked</li><li>No campaigns in Salesforce yet → campaign widget shows "Create your first campaign in Salesforce"</li><li>User refreshes during initial sync → progress spinner with "Syncing your Salesforce data (2 min)"</li></ul></div>
+  </div>
+  </div>
+</section>
+
+<div class="step-div">↓</div>
+
+<!-- ════════════════════════════════════════════════
+     STAGE 6 — DASHBOARD LIVE
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s6">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#0f172a">6</div>
+    <div class="smeta">
+      <h2>Dashboard — Live State</h2>
+      <p>The daily view a marketing manager sees every morning. KPIs, real-time lead feed, campaign performance, global lead origin map, and pipeline health — all in one screen.</p>
+      <span class="surl">app.neonone.com/dashboard</span>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/dashboard</div></div>
+    <div class="bbody">
+      <div class="app">
+        <div class="sidebar">
+          <div class="slogo"><strong>Neon One</strong><small>Marketing Portal</small></div>
+          <div class="nav a"><span class="ic">🏠</span> Dashboard</div>
+          <div class="nav"><span class="ic">👥</span> Leads</div>
+          <div class="nav"><span class="ic">📊</span> Campaigns</div>
+          <div class="nav"><span class="ic">🔀</span> Pipeline</div>
+          <div class="nav"><span class="ic">📈</span> Attribution</div>
+          <div class="nav"><span class="ic">⚙️</span> Settings</div>
+        </div>
+        <div class="amain">
+          <div class="atopbar">
+            <div><h3>Good morning, Premika ☀️</h3><p>3 new MQLs since yesterday · Pipeline up 12%</p></div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:18px;position:relative">🔔<span style="position:absolute;top:-4px;right:-4px;background:#ef4444;color:white;font-size:8px;font-weight:700;border-radius:999px;padding:1px 4px">3</span></span>
+              <div class="avc">PM</div>
+            </div>
+          </div>
+
+          <!-- KPI row -->
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-lbl">Leads This Month</div><div class="kpi-val">847</div><div class="kpi-d up">↑ 23% vs last month</div></div>
+            <div class="kpi"><div class="kpi-lbl">MQLs This Week</div><div class="kpi-val">23</div><div class="kpi-d up">↑ 8 new today</div></div>
+            <div class="kpi"><div class="kpi-lbl">Demo Conv. Rate</div><div class="kpi-val">34%</div><div class="kpi-d dn">↓ 2% vs last week</div></div>
+            <div class="kpi"><div class="kpi-lbl">Pipeline Value</div><div class="kpi-val">$2.1M</div><div class="kpi-d up">↑ 12% this week</div></div>
+          </div>
+
+          <div class="split2">
+            <!-- Lead feed -->
+            <div>
+              <div class="slbl">Live Lead Feed — last 5</div>
+              <div class="lcard new-lead">
+                <div class="lav" style="background:#6366f1">SC</div>
+                <div style="flex:1"><div class="lname">Sarah Chen</div><div class="lorg">Helping Hands Foundation · San Francisco 🇺🇸</div></div>
+                <div class="score hi">92</div>
+                <div class="lbadge mql">MQL</div>
+              </div>
+              <div class="lcard">
+                <div class="lav" style="background:#0d9488">MO</div>
+                <div style="flex:1"><div class="lname">Miguel Ortega</div><div class="lorg">Fundación Amor · Mexico City 🇲🇽</div></div>
+                <div class="score hi">88</div>
+                <div class="lbadge mql">MQL</div>
+              </div>
+              <div class="lcard">
+                <div class="lav" style="background:#d97706">AP</div>
+                <div style="flex:1"><div class="lname">Aisha Patel</div><div class="lorg">Give Forward Trust · London 🇬🇧</div></div>
+                <div class="score mid">71</div>
+                <div class="lbadge new">New</div>
+              </div>
+              <div class="lcard">
+                <div class="lav" style="background:#7c3aed">KL</div>
+                <div style="flex:1"><div class="lname">Kwame Larbi</div><div class="lorg">AfriHope NGO · Accra 🇬🇭</div></div>
+                <div class="score mid">65</div>
+                <div class="lbadge new">New</div>
+              </div>
+              <div class="lcard">
+                <div class="lav" style="background:#dc2626">TS</div>
+                <div style="flex:1"><div class="lname">Tanaka Shiori</div><div class="lorg">Tomo NPO · Tokyo 🇯🇵</div></div>
+                <div class="score lo">41</div>
+                <div class="lbadge nur">Nurture</div>
+              </div>
+            </div>
+
+            <!-- Campaign perf + world map -->
+            <div>
+              <div class="slbl">Campaign Performance — this month</div>
+              <div class="card" style="margin-bottom:12px">
+                <div class="bar-chart">
+                  <div class="brow"><div class="blbl">LinkedIn Ads</div><div class="btrack"><div class="bfill" style="width:88%;background:#0077b5"></div></div><div class="bval">312</div></div>
+                  <div class="brow"><div class="blbl">Google Ads</div><div class="btrack"><div class="bfill" style="width:64%;background:#ea4335"></div></div><div class="bval">228</div></div>
+                  <div class="brow"><div class="blbl">Webinar</div><div class="btrack"><div class="bfill" style="width:42%;background:#6366f1"></div></div><div class="bval">150</div></div>
+                  <div class="brow"><div class="blbl">Email Seq.</div><div class="btrack"><div class="bfill" style="width:30%;background:#0d9488"></div></div><div class="bval">107</div></div>
+                  <div class="brow"><div class="blbl">SEO / Organic</div><div class="btrack"><div class="bfill" style="width:14%;background:#94a3b8"></div></div><div class="bval">50</div></div>
+                </div>
+              </div>
+              <div class="slbl">Global Lead Origins</div>
+              <div class="map-area">
+                <div class="mdot" style="top:28%;left:18%"></div>
+                <div class="mdot" style="top:35%;left:20%"></div>
+                <div class="mdot" style="top:40%;left:48%"></div>
+                <div class="mdot" style="top:30%;left:50%"></div>
+                <div class="mdot" style="top:25%;left:72%"></div>
+                <div class="mdot" style="top:60%;left:25%"></div>
+                <div class="mdot" style="top:55%;left:70%"></div>
+                <div class="mdot" style="top:38%;left:55%"></div>
+                <div class="map-label">🌍 Leads from 34 countries</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+  <div class="callouts three">
+    <div class="clout touch"><h4>What the Marketer Sees</h4><ul><li>KPI cards update every 5 minutes via live sync</li><li>Lead score (0–100) calculated by Full Circle + Clay enrichment signals</li><li>Green pulsing card = lead that arrived in last 15 minutes</li><li>Country flags show leads truly coming from anywhere in the world</li><li>Notification badge shows unread MQL alerts</li></ul></div>
+    <div class="clout zero"><h4>Partial Data States</h4><ul><li>If Clay not connected: lead score shows "—" instead of number</li><li>If Chili Piper not connected: demo booked counter missing</li><li>Weekend: "Leads since Friday" instead of "today"</li><li>Date filter: defaults to current month, remembers last selection</li></ul></div>
+    <div class="clout edge"><h4>Edge Cases</h4><ul><li>Salesforce sync lag → banner: "Data last synced 23 min ago" with manual refresh button</li><li>0 leads today → encouraging message: "No new leads yet today — campaigns are still running"</li><li>Spike in leads (>3x normal) → "🔥 Unusual lead spike detected — possible viral content"</li><li>KPI drops >20% week-over-week → red delta + "Review attribution" CTA</li></ul></div>
+  </div>
+  </div>
+</section>
+
+<div class="step-div">↓</div>
+
+<!-- ════════════════════════════════════════════════
+     STAGE 7 — INCOMING LEAD ALERT
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s7">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#dc2626">7</div>
+    <div class="smeta">
+      <h2>Incoming Lead — Real-Time Alert</h2>
+      <p>The moment a new lead submits the demo form anywhere in the world, the marketing person sees a live toast notification and a new card pulses into the feed. This is the "wow moment" — a lead from Ghana or Tokyo appearing in real time.</p>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/dashboard</div></div>
+    <div class="bbody">
+      <div class="app">
+        <div class="sidebar">
+          <div class="slogo"><strong>Neon One</strong><small>Marketing Portal</small></div>
+          <div class="nav a"><span class="ic">🏠</span> Dashboard</div>
+          <div class="nav"><span class="ic">👥</span> Leads</div>
+          <div class="nav"><span class="ic">📊</span> Campaigns</div>
+          <div class="nav"><span class="ic">🔀</span> Pipeline</div>
+          <div class="nav"><span class="ic">📈</span> Attribution</div>
+          <div class="nav"><span class="ic">⚙️</span> Settings</div>
+        </div>
+        <div class="amain" style="position:relative">
+          <!-- Toast notification (top right) -->
+          <div style="position:absolute;top:16px;right:16px;z-index:10">
+            <div class="toast">
+              <div class="tic">🔔</div>
+              <div>
+                <div class="tt">New MQL — Kwame Larbi</div>
+                <div class="ts">AfriHope NGO · Accra, Ghana 🇬🇭 · via LinkedIn Ad</div>
+                <div style="margin-top:6px;display:flex;gap:6px">
+                  <span style="font-size:10px;background:#6366f1;color:white;padding:3px 8px;border-radius:6px;font-weight:600;cursor:pointer">View Lead →</span>
+                  <span style="font-size:10px;color:#64748b;padding:3px 8px;cursor:pointer">Dismiss</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="atopbar" style="margin-right:200px">
+            <div><h3>Good morning, Premika ☀️</h3><p>4 new MQLs since yesterday</p></div>
+          </div>
+
+          <!-- New lead pulsing at top of feed -->
+          <div class="slbl">Live Lead Feed</div>
+          <div class="lcard new-lead">
+            <div style="font-size:9px;font-weight:700;color:#6366f1;background:#e0e7ff;padding:2px 6px;border-radius:4px;flex-shrink:0">NEW</div>
+            <div class="lav" style="background:#7c3aed">KL</div>
+            <div style="flex:1">
+              <div class="lname">Kwame Larbi <span style="font-size:10px;color:#94a3b8;font-weight:400">just now</span></div>
+              <div class="lorg">AfriHope NGO · Executive Director · Accra, Ghana 🇬🇭</div>
+              <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap">
+                <span class="pill ind">LinkedIn Ad</span>
+                <span class="pill pur">Demo Request</span>
+                <span class="pill tea">CRM size: 5,000 donors</span>
+              </div>
+            </div>
+            <div class="score hi">88</div>
+            <div class="lbadge mql">MQL</div>
+          </div>
+
+          <div class="lcard">
+            <div class="lav" style="background:#6366f1">SC</div>
+            <div style="flex:1"><div class="lname">Sarah Chen <span style="font-size:10px;color:#94a3b8;font-weight:400">8 min ago</span></div><div class="lorg">Helping Hands Foundation · San Francisco 🇺🇸</div></div>
+            <div class="score hi">92</div>
+            <div class="lbadge mql">MQL</div>
+          </div>
+
+          <div class="lcard">
+            <div class="lav" style="background:#0d9488">MO</div>
+            <div style="flex:1"><div class="lname">Miguel Ortega <span style="font-size:10px;color:#94a3b8;font-weight:400">41 min ago</span></div><div class="lorg">Fundación Amor · Mexico City 🇲🇽</div></div>
+            <div class="score hi">88</div>
+            <div class="lbadge mql">MQL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+  <div class="callouts three">
+    <div class="clout touch"><h4>What Triggers the Alert</h4><ul><li>Nonprofit staffer anywhere in the world submits demo request form</li><li>Full Circle fires attribution pixel + captures UTM source</li><li>Salesforce Lead record created in &lt;30 seconds</li><li>Neon One portal receives webhook → toast fires on marketer's screen</li><li>Lead score calculated immediately using Clay enrichment</li></ul></div>
+    <div class="clout zero"><h4>No Leads State</h4><ul><li>Feed shows "Waiting for leads… campaigns are running" with animated dots</li><li>No toast appears — bell stays gray</li><li>MQL counter stays at 0 with "No MQLs yet this week"</li></ul></div>
+    <div class="clout edge"><h4>Edge Cases</h4><ul><li>Lead spam / bot submission → score &lt;20, flagged as "Suspicious — review" in orange</li><li>Duplicate lead (same email) → badge shows "Returning" + previous history linked</li><li>Lead from blocked geography → shown but flagged for compliance review</li><li>Multiple leads same second (form bot) → grouped as "Bulk submission — possible spam"</li><li>Portal tab in background → browser push notification fires</li></ul></div>
+  </div>
+  </div>
+</section>
+
+<div class="step-div">↓</div>
+
+<!-- ════════════════════════════════════════════════
+     STAGE 8 — LEAD DETAIL VIEW
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s8">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#0284c7">8</div>
+    <div class="smeta">
+      <h2>Lead Detail View</h2>
+      <p>The marketer clicks "View Lead" to see the full profile: contact info, Clay enrichment data, campaign attribution timeline, ICP score breakdown, and action buttons to route or book.</p>
+      <span class="surl">app.neonone.com/leads/kwame-larbi-afrihope</span>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/leads/kwame-larbi-afrihope</div></div>
+    <div class="bbody">
+      <div class="app">
+        <div class="sidebar">
+          <div class="slogo"><strong>Neon One</strong><small>Marketing Portal</small></div>
+          <div class="nav"><span class="ic">🏠</span> Dashboard</div>
+          <div class="nav a"><span class="ic">👥</span> Leads</div>
+          <div class="nav"><span class="ic">📊</span> Campaigns</div>
+          <div class="nav"><span class="ic">🔀</span> Pipeline</div>
+          <div class="nav"><span class="ic">📈</span> Attribution</div>
+          <div class="nav"><span class="ic">⚙️</span> Settings</div>
+        </div>
+        <div class="amain">
+          <!-- Header -->
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+            <div class="lav" style="width:48px;height:48px;background:#7c3aed;font-size:17px">KL</div>
+            <div style="flex:1">
+              <div style="font-size:17px;font-weight:800;color:#0f172a">Kwame Larbi</div>
+              <div style="font-size:12px;color:#64748b">Executive Director · AfriHope NGO · Accra, Ghana 🇬🇭</div>
+              <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
+                <span class="lbadge mql">MQL</span>
+                <span class="pill ind">Score: 88/100</span>
+                <span class="pill tea">ICP: Strong match</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-shrink:0">
+              <div class="btn sec" style="font-size:11px;padding:7px 12px">📧 Send email</div>
+              <div class="btn pri" style="font-size:11px;padding:7px 12px;width:auto">🚀 Route to SDR</div>
+            </div>
+          </div>
+
+          <div class="detail-grid">
+            <!-- Left: contact + enrichment -->
+            <div>
+              <div class="card">
+                <div class="slbl">Contact</div>
+                <div class="field-row"><div class="field-lbl">Email</div><div class="field-val">kwame@afrihope.org</div></div>
+                <div class="field-row"><div class="field-lbl">Phone</div><div class="field-val">+233 30 291 xxxx <span style="font-size:9px;color:#16a34a">✓ Clay verified</span></div></div>
+                <div class="field-row"><div class="field-lbl">LinkedIn</div><div class="field-val" style="color:#0077b5">linkedin.com/in/kwame-larbi</div></div>
+                <div class="field-row"><div class="field-lbl">Lead created</div><div class="field-val">Today, 9:14 AM</div></div>
+                <div class="field-row"><div class="field-lbl">Lead source</div><div class="field-val">LinkedIn Ad — Nonprofit CRM 2026</div></div>
+              </div>
+
+              <div class="enriched" style="margin-top:10px">
+                <div class="e-hd">🧱 Clay Enrichment</div>
+                <div class="e-row"><span>Org size</span><strong>12 staff · 5,200 donors</strong></div>
+                <div class="e-row"><span>Current CRM</span><strong>Spreadsheets (manual)</strong></div>
+                <div class="e-row"><span>Annual revenue</span><strong>~$340K (990 filing)</strong></div>
+                <div class="e-row"><span>Tech stack</span><strong>Mailchimp, M365</strong></div>
+                <div class="e-row"><span>Recent news</span><strong>Won USAID grant (March 2026)</strong></div>
+                <div class="e-row"><span>Intent signal</span><strong style="color:#dc2626">🔴 Actively evaluating CRMs</strong></div>
+              </div>
+            </div>
+
+            <!-- Right: attribution + activity -->
+            <div>
+              <div class="card" style="margin-bottom:12px">
+                <div class="slbl">Campaign Attribution Timeline</div>
+                <div class="attr-timeline">
+                  <div class="anode">
+                    <div class="adot" style="background:#0077b5">📢</div>
+                    <div class="albl">LinkedIn Ad<br/>Nonprofit CRM</div>
+                    <div class="apct">40%</div>
+                  </div>
+                  <div class="aline"></div>
+                  <div class="anode">
+                    <div class="adot" style="background:#6366f1">🎙</div>
+                    <div class="albl">Webinar<br/>CRM for NGOs</div>
+                    <div class="apct">30%</div>
+                  </div>
+                  <div class="aline"></div>
+                  <div class="anode">
+                    <div class="adot" style="background:#ea4335">🔍</div>
+                    <div class="albl">Google Ad<br/>Retargeting</div>
+                    <div class="apct">20%</div>
+                  </div>
+                  <div class="aline"></div>
+                  <div class="anode">
+                    <div class="adot" style="background:#16a34a">📝</div>
+                    <div class="albl">Demo Form<br/>Submission</div>
+                    <div class="apct">10%</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="slbl">Activity Timeline</div>
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;gap:10px;align-items:flex-start">
+                    <div style="width:8px;height:8px;border-radius:50%;background:#6366f1;margin-top:4px;flex-shrink:0"></div>
+                    <div><div style="font-size:12px;font-weight:600;color:#0f172a">Demo form submitted</div><div style="font-size:10px;color:#94a3b8">Today 9:14 AM · neonone.com/demo</div></div>
+                  </div>
+                  <div style="display:flex;gap:10px;align-items:flex-start">
+                    <div style="width:8px;height:8px;border-radius:50%;background:#ea4335;margin-top:4px;flex-shrink:0"></div>
+                    <div><div style="font-size:12px;font-weight:600;color:#0f172a">Clicked Google retargeting ad</div><div style="font-size:10px;color:#94a3b8">Yesterday 4:22 PM</div></div>
+                  </div>
+                  <div style="display:flex;gap:10px;align-items:flex-start">
+                    <div style="width:8px;height:8px;border-radius:50%;background:#6366f1;margin-top:4px;flex-shrink:0"></div>
+                    <div><div style="font-size:12px;font-weight:600;color:#0f172a">Attended webinar "CRM for NGOs"</div><div style="font-size:10px;color:#94a3b8">May 10, 2026</div></div>
+                  </div>
+                  <div style="display:flex;gap:10px;align-items:flex-start">
+                    <div style="width:8px;height:8px;border-radius:50%;background:#0077b5;margin-top:4px;flex-shrink:0"></div>
+                    <div><div style="font-size:12px;font-weight:600;color:#0f172a">Clicked LinkedIn ad</div><div style="font-size:10px;color:#94a3b8">May 3, 2026 · First touch</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+  <div class="callouts three">
+    <div class="clout touch"><h4>Touchpoints Surfaced</h4><ul><li>Every campaign they touched — from first LinkedIn ad click to form fill</li><li>Attribution credit split across all touches (Full Circle multi-touch model)</li><li>Clay enrichment: verified phone, current CRM, org financials, recent news</li><li>Intent signal: "Actively evaluating CRMs" is the hottest signal — flags immediately</li><li>Marketer can see the full journey a nonprofit person took before raising their hand</li></ul></div>
+    <div class="clout zero"><h4>Partial / Zero States</h4><ul><li>Clay not connected → enrichment section shows "Connect Clay to see enrichment data"</li><li>No prior campaign touches → attribution shows only form submission (100%)</li><li>New lead with no enrichment yet → "Enriching now… (usually under 2 minutes)"</li><li>Phone not found by Clay → shows "No verified number found" instead of blank</li></ul></div>
+    <div class="clout edge"><h4>Edge Cases</h4><ul><li>Lead is a known contact (same email, different name) → "Possible duplicate" warning with merge option</li><li>Competitor employee fills form → Clay flags "Competitor: Blackbaud employee" in red</li><li>Lead from sanctioned country → compliance flag, routing blocked until legal review</li><li>Executive-level contact (CEO/ED) → "High Value" badge, routed directly to AE not SDR</li></ul></div>
+  </div>
+  </div>
+</section>
+
+<div class="step-div">↓</div>
+
+<!-- ════════════════════════════════════════════════
+     STAGE 9 — CAMPAIGN ATTRIBUTION
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s9">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#d97706">9</div>
+    <div class="smeta">
+      <h2>Campaign Attribution</h2>
+      <p>The attribution screen shows which campaigns drove which leads, MQLs, and revenue — across all channels. This is where the marketing person proves ROI and decides where to invest next.</p>
+      <span class="surl">app.neonone.com/attribution</span>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/attribution</div></div>
+    <div class="bbody">
+      <div class="app">
+        <div class="sidebar">
+          <div class="slogo"><strong>Neon One</strong><small>Marketing Portal</small></div>
+          <div class="nav"><span class="ic">🏠</span> Dashboard</div>
+          <div class="nav"><span class="ic">👥</span> Leads</div>
+          <div class="nav"><span class="ic">📊</span> Campaigns</div>
+          <div class="nav"><span class="ic">🔀</span> Pipeline</div>
+          <div class="nav a"><span class="ic">📈</span> Attribution</div>
+          <div class="nav"><span class="ic">⚙️</span> Settings</div>
+        </div>
+        <div class="amain">
+          <div class="atopbar">
+            <div><h3>Campaign Attribution</h3><p>Multi-touch · May 2026 · All campaigns</p></div>
+            <div style="display:flex;gap:8px">
+              <div class="btn sec" style="font-size:11px;padding:6px 12px">📅 May 2026 ▾</div>
+              <div class="btn sec" style="font-size:11px;padding:6px 12px">Model: Even ▾</div>
+            </div>
+          </div>
+
+          <!-- Attribution model toggle -->
+          <div style="display:flex;gap:6px;margin-bottom:14px">
+            <span style="padding:6px 12px;background:#6366f1;color:white;border-radius:6px;font-size:11px;font-weight:600">Even Touch</span>
+            <span style="padding:6px 12px;background:#f1f5f9;color:#64748b;border-radius:6px;font-size:11px;font-weight:600">First Touch</span>
+            <span style="padding:6px 12px;background:#f1f5f9;color:#64748b;border-radius:6px;font-size:11px;font-weight:600">Last Touch</span>
+            <span style="padding:6px 12px;background:#f1f5f9;color:#64748b;border-radius:6px;font-size:11px;font-weight:600">W-Shaped</span>
+          </div>
+
+          <!-- Attribution by channel -->
+          <div class="card" style="margin-bottom:12px">
+            <div class="slbl">Revenue Attributed by Channel</div>
+            <div class="bar-chart">
+              <div class="brow"><div class="blbl">LinkedIn Ads</div><div class="btrack"><div class="bfill" style="width:78%;background:#0077b5"></div></div><div class="bval">$820K</div></div>
+              <div class="brow"><div class="blbl">Webinars</div><div class="btrack"><div class="bfill" style="width:52%;background:#6366f1"></div></div><div class="bval">$547K</div></div>
+              <div class="brow"><div class="blbl">Google Ads</div><div class="btrack"><div class="bfill" style="width:40%;background:#ea4335"></div></div><div class="bval">$420K</div></div>
+              <div class="brow"><div class="blbl">Email Seqs</div><div class="btrack"><div class="bfill" style="width:20%;background:#0d9488"></div></div><div class="bval">$210K</div></div>
+              <div class="brow"><div class="blbl">Organic SEO</div><div class="btrack"><div class="bfill" style="width:10%;background:#94a3b8"></div></div><div class="bval">$103K</div></div>
+            </div>
+          </div>
+
+          <!-- Campaign table -->
+          <div class="card">
+            <div class="slbl">Campaign Breakdown</div>
+            <table class="mini-tbl">
+              <thead>
+                <tr><th>Campaign</th><th>Leads</th><th>MQLs</th><th>SQLs</th><th>Rev. Attr.</th><th>ROI</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>LinkedIn — Nonprofit CRM 2026</td><td>312</td><td>89</td><td>34</td><td>$820K</td><td style="color:#16a34a;font-weight:700">8.2x</td></tr>
+                <tr><td>Webinar — CRM for NGOs (May)</td><td>150</td><td>56</td><td>21</td><td>$547K</td><td style="color:#16a34a;font-weight:700">6.1x</td></tr>
+                <tr><td>Google Ads — Blackbaud Alternative</td><td>228</td><td>44</td><td>18</td><td>$420K</td><td style="color:#16a34a;font-weight:700">4.8x</td></tr>
+                <tr><td>Email — Nurture Sequence Q2</td><td>107</td><td>18</td><td>9</td><td>$210K</td><td style="color:#d97706;font-weight:700">2.1x</td></tr>
+                <tr><td>SEO / Organic</td><td>50</td><td>12</td><td>5</td><td>$103K</td><td style="color:#16a34a;font-weight:700">∞</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zero state -->
+  <div class="slbl" style="margin-top:14px">Zero State — no campaigns connected yet</div>
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/attribution</div></div>
+    <div class="bbody">
+      <div class="amain" style="background:#f8fafc;min-height:200px;display:flex;align-items:center;justify-content:center">
+        <div class="empty">
+          <div class="ei">📈</div>
+          <div class="et">No attribution data yet</div>
+          <div class="es">Connect Full Circle Insights and run your first campaign to see multi-touch attribution here.</div>
+          <div class="eb">Connect Full Circle →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+  <div class="callouts">
+    <div class="clout touch"><h4>What This Tells the Marketer</h4><ul><li>Which channels are worth investing in (LinkedIn 8.2x ROI vs Email 2.1x)</li><li>How each campaign contributed across the full funnel — not just last-touch</li><li>Proves marketing's impact on revenue to leadership</li><li>Identifies campaigns to cut (low ROI) and scale (high ROI)</li><li>Attribution model toggle lets them see different credit scenarios</li></ul></div>
+    <div class="clout edge"><h4>Edge Cases</h4><ul><li>Campaign with 0 MQLs → row shown in gray with "No MQLs yet — still running"</li><li>Attribution model change → numbers recalculate in real time with loading shimmer</li><li>Offline campaign (event, direct mail) → can be added manually with "Add offline touchpoint"</li><li>Date range with no data → "No leads in this period" with suggestion to widen range</li><li>CSV export → available, respects date filter and selected model</li></ul></div>
+  </div>
+  </div>
+</section>
+
+<div class="step-div">↓</div>
+
+<!-- ════════════════════════════════════════════════
+     STAGE 10 — PIPELINE FUNNEL
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s10">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#16a34a">10</div>
+    <div class="smeta">
+      <h2>Pipeline Funnel — Health View</h2>
+      <p>The marketer can see how many leads are at each stage of the pipeline — from raw lead to Closed Won — with conversion rates and average time in each stage. This is where they spot bottlenecks.</p>
+      <span class="surl">app.neonone.com/pipeline</span>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/pipeline</div></div>
+    <div class="bbody">
+      <div class="app">
+        <div class="sidebar">
+          <div class="slogo"><strong>Neon One</strong><small>Marketing Portal</small></div>
+          <div class="nav"><span class="ic">🏠</span> Dashboard</div>
+          <div class="nav"><span class="ic">👥</span> Leads</div>
+          <div class="nav"><span class="ic">📊</span> Campaigns</div>
+          <div class="nav a"><span class="ic">🔀</span> Pipeline</div>
+          <div class="nav"><span class="ic">📈</span> Attribution</div>
+          <div class="nav"><span class="ic">⚙️</span> Settings</div>
+        </div>
+        <div class="amain">
+          <div class="atopbar">
+            <div><h3>Pipeline Health</h3><p>MQL → Closed Won · May 2026</p></div>
+            <div class="btn sec" style="font-size:11px;padding:6px 12px">📅 This Month ▾</div>
+          </div>
+
+          <!-- Funnel -->
+          <div class="split2">
+            <div class="card">
+              <div class="slbl">Conversion Funnel</div>
+              <div class="funnel">
+                <div class="fstep">
+                  <div class="fmeta" style="text-align:right">847 leads</div>
+                  <div class="fbar" style="flex:1;background:#6366f1;margin:0 8px">Leads</div>
+                  <div style="width:60px;font-size:10px;color:#64748b">Avg 0d</div>
+                </div>
+                <div class="fconv">↓ 27% → MQL</div>
+                <div class="fstep">
+                  <div class="fmeta" style="text-align:right">229 MQLs</div>
+                  <div class="fbar" style="width:75%;background:#0284c7;margin:0 8px">MQL</div>
+                  <div style="width:60px;font-size:10px;color:#64748b">Avg 1.2d</div>
+                </div>
+                <div class="fconv">↓ 54% → SQL</div>
+                <div class="fstep">
+                  <div class="fmeta" style="text-align:right">124 SQLs</div>
+                  <div class="fbar" style="width:55%;background:#0d9488;margin:0 8px">SQL</div>
+                  <div style="width:60px;font-size:10px;color:#64748b">Avg 3.4d</div>
+                </div>
+                <div class="fconv">↓ 68% → Demo</div>
+                <div class="fstep">
+                  <div class="fmeta" style="text-align:right">84 Demos</div>
+                  <div class="fbar" style="width:40%;background:#d97706;margin:0 8px">Demo</div>
+                  <div style="width:60px;font-size:10px;color:#64748b">Avg 5.1d</div>
+                </div>
+                <div class="fconv">↓ 48% → Proposal</div>
+                <div class="fstep">
+                  <div class="fmeta" style="text-align:right">40 Props</div>
+                  <div class="fbar" style="width:26%;background:#7c3aed;margin:0 8px">Proposal</div>
+                  <div style="width:60px;font-size:10px;color:#64748b">Avg 14d</div>
+                </div>
+                <div class="fconv">↓ 55% → Won</div>
+                <div class="fstep">
+                  <div class="fmeta" style="text-align:right">22 Won</div>
+                  <div class="fbar" style="width:16%;background:#16a34a;margin:0 8px">Closed Won 🏆</div>
+                  <div style="width:60px;font-size:10px;color:#64748b">Avg 32d</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottleneck + stage health -->
+            <div>
+              <div class="card" style="margin-bottom:12px">
+                <div class="slbl">Stage Health</div>
+                <table class="mini-tbl">
+                  <thead><tr><th>Stage</th><th>Conv %</th><th>Avg Time</th><th>Health</th></tr></thead>
+                  <tbody>
+                    <tr><td>Lead → MQL</td><td>27%</td><td>1.2d</td><td style="color:#16a34a;font-weight:700">✓ Good</td></tr>
+                    <tr><td>MQL → SQL</td><td>54%</td><td>3.4d</td><td style="color:#16a34a;font-weight:700">✓ Good</td></tr>
+                    <tr><td>SQL → Demo</td><td>68%</td><td>5.1d</td><td style="color:#16a34a;font-weight:700">✓ Good</td></tr>
+                    <tr><td>Demo → Proposal</td><td>48%</td><td>14d</td><td style="color:#d97706;font-weight:700">⚠ Slow</td></tr>
+                    <tr><td>Proposal → Won</td><td>55%</td><td>32d</td><td style="color:#16a34a;font-weight:700">✓ Good</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="card" style="background:#fffbeb;border:1px solid #fde68a">
+                <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:8px">⚠ Bottleneck Detected</div>
+                <div style="font-size:12px;color:#78350f;line-height:1.6">Demo → Proposal is taking an average of <strong>14 days</strong>, 2.3x slower than last month. 18 leads are stuck here. Consider: shorter proposal turnaround, AE follow-up nudge, or pricing FAQ content.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+  <div class="callouts">
+    <div class="clout zero"><h4>Zero State</h4><ul><li>Funnel shows all stages but all counts at 0</li><li>"Your pipeline will populate as leads enter the system from your campaigns"</li><li>Stage health table shows "—" in all fields</li><li>No bottleneck alert appears when there is no data</li></ul></div>
+    <div class="clout edge"><h4>Edge Cases</h4><ul><li>Conversion rate drops &gt;10% week-over-week → stage turns red with alert</li><li>Lead stuck in a stage &gt;30 days → flagged individually in Leads view</li><li>0 leads reach Demo stage → "Check if Chili Piper booking is configured correctly"</li><li>Closed Lost spike → "Loss reason analysis" CTA surfaces automatically</li><li>Month filter = all-time → funnel shows historical aggregate with trend arrows</li></ul></div>
+  </div>
+  </div>
+</section>
+
+<div class="step-div">↓</div>
+
+<!-- ════════════════════════════════════════════════
+     STAGE 11 — SLA ALERT
+════════════════════════════════════════════════ -->
+<section class="stage-sec" id="s11">
+  <div class="stage-hdr">
+    <div class="snum" style="background:#ea580c">11</div>
+    <div class="smeta">
+      <h2>SLA Alert — SDR Response Breach</h2>
+      <p>When an SDR hasn't responded to an assigned MQL within the SLA window (default: 1 hour), the marketing team sees an alert. They can trigger a reassignment before the lead goes cold.</p>
+      <span class="surl">app.neonone.com/leads?filter=sla-breach</span>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="bchrome"><div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div><div class="burl">app.neonone.com/leads?filter=sla-breach</div></div>
+    <div class="bbody">
+      <div class="app">
+        <div class="sidebar">
+          <div class="slogo"><strong>Neon One</strong><small>Marketing Portal</small></div>
+          <div class="nav"><span class="ic">🏠</span> Dashboard</div>
+          <div class="nav a"><span class="ic">👥</span> Leads</div>
+          <div class="nav"><span class="ic">📊</span> Campaigns</div>
+          <div class="nav"><span class="ic">🔀</span> Pipeline</div>
+          <div class="nav"><span class="ic">📈</span> Attribution</div>
+          <div class="nav"><span class="ic">⚙️</span> Settings</div>
+        </div>
+        <div class="amain">
+          <div class="atopbar">
+            <div><h3>Leads — SLA Breach Alert 🔴</h3><p>3 leads have not been contacted within the 1-hour SLA</p></div>
+          </div>
+
+          <div class="abanner err" style="margin-bottom:14px">🚨 3 MQLs have breached the 1-hour response SLA. SDR contact has not been logged. These leads are at risk of going cold.</div>
+
+          <!-- SLA breach cards -->
+          <div class="sla-card">
+            <div class="sla-ic">⏰</div>
+            <div class="sla-body">
+              <div class="st">Sarah Chen — Helping Hands Foundation</div>
+              <div class="ss">Assigned to: Jordan Reeves (SDR) · No contact logged</div>
+              <div class="stime">SLA breached 47 minutes ago · Total wait: 1h 47m</div>
+            </div>
+            <div class="reassign-btn">Reassign →</div>
+          </div>
+
+          <div class="sla-card">
+            <div class="sla-ic">⏰</div>
+            <div class="sla-body">
+              <div class="st">Miguel Ortega — Fundación Amor</div>
+              <div class="ss">Assigned to: Priya Mehta (SDR) · No contact logged</div>
+              <div class="stime">SLA breached 12 minutes ago · Total wait: 1h 12m</div>
+            </div>
+            <div class="reassign-btn">Reassign →</div>
+          </div>
+
+          <div class="sla-card">
+            <div class="sla-ic">⏰</div>
+            <div class="sla-body">
+              <div class="st">Kwame Larbi — AfriHope NGO</div>
+              <div class="ss">Assigned to: Jordan Reeves (SDR) · No contact logged</div>
+              <div class="stime">SLA breached 3 minutes ago · Total wait: 1h 03m</div>
+            </div>
+            <div class="reassign-btn">Reassign →</div>
+          </div>
+
+          <!-- SLA health summary -->
+          <div class="card" style="margin-top:12px">
+            <div class="slbl">SDR SLA Performance — This Week</div>
+            <div class="bar-chart">
+              <div class="brow"><div class="blbl">Jordan Reeves</div><div class="btrack"><div class="bfill" style="width:55%;background:#ef4444"></div></div><div class="bval" style="color:#ef4444">55%</div></div>
+              <div class="brow"><div class="blbl">Priya Mehta</div><div class="btrack"><div class="bfill" style="width:88%;background:#16a34a"></div></div><div class="bval" style="color:#16a34a">88%</div></div>
+              <div class="brow"><div class="blbl">Alex Kim</div><div class="btrack"><div class="bfill" style="width:94%;background:#16a34a"></div></div><div class="bval" style="color:#16a34a">94%</div></div>
+              <div class="brow"><div class="blbl">Sam Torres</div><div class="btrack"><div class="bfill" style="width:72%;background:#d97706"></div></div><div class="bval" style="color:#d97706">72%</div></div>
+            </div>
+            <div style="font-size:11px;color:#64748b;margin-top:10px">SLA target: 90% of MQLs contacted within 1 hour. Jordan Reeves is below threshold — flagged for manager review.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+  <div class="callouts three">
+    <div class="clout zero"><h4>Zero State — No Breaches</h4><ul><li>SLA filter shows "✓ All leads within SLA — great work!"</li><li>Green banner instead of red</li><li>SLA health bars all green</li><li>No breach cards visible</li></ul></div>
+    <div class="clout edge"><h4>Edge Cases</h4><ul><li>SDR on leave/OOO → system auto-reassigns before SLA breach, not after</li><li>Lead in non-business-hours timezone → SLA clock pauses and resumes at next business hour</li><li>SDR logged a call but Salesforce task not created → grace period of 15 min before alert</li><li>SDR SLA &lt;50% for 3 days → escalation email to their manager automatically</li><li>Marketer manually reassigns → SDR receives Slack ping immediately</li></ul></div>
+    <div class="clout touch"><h4>Why This Matters for Marketing</h4><ul><li>Marketing spends budget to acquire these leads — an SDR going silent wastes that spend</li><li>Leads go cold fast: 78% of buyers choose the vendor that responds first (research-backed)</li><li>Marketing visibility into SDR performance closes the handoff gap</li><li>This screen is only visible to marketing managers + RevOps — not junior SDRs</li></ul></div>
+  </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     JOURNEY SUMMARY
+════════════════════════════════════════════════ -->
+<div style="background:#0f172a;border-radius:16px;padding:36px 40px;margin-top:24px;color:white">
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:12px">Journey Summary</div>
+  <div style="font-size:20px;font-weight:800;margin-bottom:10px">From Zero to Global Lead Intelligence</div>
+  <div style="font-size:13px;color:#94a3b8;line-height:1.7;margin-bottom:24px">A marketing person at Neon One signs up, connects their GTM stack, and immediately has visibility into every lead entering the pipeline — from a nonprofit in Ghana to a foundation in Tokyo — with full campaign attribution, enrichment data, pipeline health, and SLA monitoring, all in a single portal.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+    <div style="background:#1e293b;border-radius:10px;padding:16px;text-align:center">
+      <div style="font-size:24px;font-weight:800;color:#6366f1">11</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:4px">Screens Documented</div>
+    </div>
+    <div style="background:#1e293b;border-radius:10px;padding:16px;text-align:center">
+      <div style="font-size:24px;font-weight:800;color:#16a34a">34+</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:4px">Edge Cases Covered</div>
+    </div>
+    <div style="background:#1e293b;border-radius:10px;padding:16px;text-align:center">
+      <div style="font-size:24px;font-weight:800;color:#d97706">100%</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:4px">Zero States Defined</div>
+    </div>
+    <div style="background:#1e293b;border-radius:10px;padding:16px;text-align:center">
+      <div style="font-size:24px;font-weight:800;color:#0d9488">5 Tools</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:4px">SF · FC · Clay · TC · CP</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+</body>
+</html>
